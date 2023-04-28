@@ -11,7 +11,7 @@ class ExerciseController extends Controller
     public function index()
     {
         $exercises = Exercise::all();
-        return response()->json($exercises, 200);
+        return response()->json(['exercises' => $exercises], 200);
     }
 
     public function show(Exercise $exercise)

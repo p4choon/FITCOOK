@@ -11,7 +11,7 @@ class RecipeController extends Controller
     public function index()
     {
         $recipes = Recipe::all();
-        return response()->json($recipes, 200);
+        return response()->json(['recipes' => $recipes], 200);
     }
 
     public function show(Recipe $recipe)

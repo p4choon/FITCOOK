@@ -11,7 +11,7 @@ class IngredientController extends Controller
     public function index()
     {
         $ingredients = Ingredient::all();
-        return response()->json($ingredients, 200);
+        return response()->json(['ingredients' => $ingredients], 200);
     }
 
     public function show(Ingredient $ingredient)
