@@ -3,6 +3,7 @@ use App\Http\Controllers\Api\ExerciseController;
 use App\Http\Controllers\Api\RoutineController;
 use App\Http\Controllers\Api\IngredientController;
 use App\Http\Controllers\Api\RecipeController;
+use App\Http\Controllers\Api\TokenController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -17,9 +18,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::get('user', [TokenController::class, 'user'])->middleware('auth:sanctum');
+Route::post('logout', [TokenController::class, 'logout'])->middleware('auth:sanctum');
+Route::post('login', [TokenController::class, 'login']);
+Route::post('register', [TokenController::class, 'register']);
+
 Route::apiResource('exercises', ExerciseController::class);
 Route::post('exercises/{exercise}', [ExerciseController::class, 'update_workaround']);
 
