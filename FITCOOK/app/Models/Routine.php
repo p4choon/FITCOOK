@@ -12,8 +12,12 @@ class Routine extends Model
     protected $fillable = [
         'user_id',
         'title',
-        'description',
-        'exercises'
+        'description'
+        // ,'exercises'
+    ];
+
+    protected $casts = [
+        'exercises' => 'json',
     ];
 
     public function user()
@@ -25,5 +29,10 @@ class Routine extends Model
     {
         return $this->belongsToMany(Exercise::class)
             ->withPivot(['sets', 'repetitions', 'rest_time', 'tips']);
+    }
+
+    public function routineExercises()
+    {
+        return $this->hasMany(RoutineExercise::class);
     }
 }
