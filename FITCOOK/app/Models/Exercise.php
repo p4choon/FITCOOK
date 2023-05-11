@@ -10,16 +10,23 @@ class Exercise extends Model
     use HasFactory;
 
     protected $fillable = [
+        'user_id',
         'title',
         'description',
         'level',
         'muscle_groups',
-        'video_url'
+        'video_url',
+        'miniature'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function routines()
     {
-        return $this->belongsToMany(Routine::class)
+        return $this->belongsToMany(Routine::class, 'routine_exercises')
             ->withPivot(['sets', 'repetitions', 'rest_time', 'tips']);
     }
 }

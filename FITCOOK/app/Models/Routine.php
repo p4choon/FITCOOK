@@ -13,12 +13,11 @@ class Routine extends Model
         'user_id',
         'title',
         'description'
-        // ,'exercises'
     ];
 
-    protected $casts = [
-        'exercises' => 'json',
-    ];
+    // protected $casts = [
+    //     'exercises' => 'json',
+    // ];
 
     public function user()
     {
@@ -27,12 +26,7 @@ class Routine extends Model
 
     public function exercises()
     {
-        return $this->belongsToMany(Exercise::class)
+        return $this->belongsToMany(Exercise::class, 'routine_exercises')
             ->withPivot(['sets', 'repetitions', 'rest_time', 'tips']);
-    }
-
-    public function routineExercises()
-    {
-        return $this->hasMany(RoutineExercise::class);
     }
 }

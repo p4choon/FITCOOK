@@ -13,24 +13,16 @@ return new class extends Migration
     {
         Schema::create('exercises', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained('users');
             $table->string('title');
             $table->text('description');
-            $table->integer('level');
-            $table->text('muscle_groups');
+            $table->enum('level', ['beginner', 'intermediate', 'advanced']);
+            $table->string('muscle_groups');
             $table->string('video_url');
+            $table->string('miniature')->nullable();
             $table->timestamps();
         });
 
-        Schema::create('exercise_routine', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('exercise_id')->constrained()->onDelete('cascade');
-            $table->foreignId('routine_id')->constrained()->onDelete('cascade');
-            $table->integer('sets');
-            $table->integer('repetitions');
-            $table->integer('rest_time');
-            $table->string('tips');
-            $table->timestamps();
-        });
     }
 
     /**
@@ -38,7 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('exercise_routine');
         Schema::dropIfExists('exercises');
     }
 };

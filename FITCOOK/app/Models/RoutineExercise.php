@@ -9,22 +9,15 @@ class RoutineExercise extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'routine_id',
-        'exercise_id',
-        'sets',
-        'repetitions',
-        'rest_time',
-        'tips'
-    ];
-
-    public function exercise()
-    {
-        return $this->belongsTo(Exercise::class);
-    }
+    protected $fillable = ['routine_id', 'exercise_id', 'sets', 'repetitions', 'rest_time', 'tips'];
 
     public function routine()
     {
         return $this->belongsTo(Routine::class);
+    }
+
+    public function exercise()
+    {
+        return $this->belongsTo(Exercise::class);
     }
 }

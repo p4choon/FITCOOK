@@ -13,15 +13,13 @@ return new class extends Migration
     {
         Schema::create('routine_exercises', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('routine_id');
-            $table->unsignedBigInteger('exercise_id');
+            $table->foreignId('routine_id')->constrained('routines');
+            $table->foreignId('exercise_id')->constrained('exercises');
             $table->integer('sets');
             $table->integer('repetitions');
-            $table->integer('rest_time')->nullable();
+            $table->integer('rest_time');
             $table->text('tips')->nullable();
             $table->timestamps();
-            $table->foreign('routine_id')->references('id')->on('routines')->onDelete('cascade');
-            $table->foreign('exercise_id')->references('id')->on('exercises')->onDelete('cascade');
         });
     }
 
