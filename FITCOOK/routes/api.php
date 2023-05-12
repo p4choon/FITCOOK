@@ -38,3 +38,5 @@ Route::post('ingredients/{ingredient}', [IngredientController::class, 'update_wo
 
 Route::apiResource('recipes', RecipeController::class);
 Route::post('recipes/{recipe}', [RecipeController::class, 'update_workaround']);
+
+Route::post('/pagar','PagoController@procesarPago');
