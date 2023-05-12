@@ -104,7 +104,6 @@ class RoutineController extends Controller
 
     public function destroy($id)
     {
-        
         $routine = Routine::find($id);
         if($routine){
             $routine->delete();

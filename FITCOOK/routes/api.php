@@ -1,6 +1,7 @@
 <?php
 use App\Http\Controllers\Api\ExerciseController;
 use App\Http\Controllers\Api\RoutineController;
+use App\Http\Controllers\Api\RoutineExerciseController;
 use App\Http\Controllers\Api\IngredientController;
 use App\Http\Controllers\Api\RecipeController;
 use App\Http\Controllers\Api\TokenController;
