@@ -16,6 +16,9 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users');
             $table->string('title');
             $table->text('description');
+            $table->string('level');
+            $table->integer('duration');
+            $table->string('muscle_groups');
             $table->timestamps();
         });
         

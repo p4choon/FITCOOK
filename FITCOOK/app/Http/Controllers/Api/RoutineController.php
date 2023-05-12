@@ -20,24 +20,12 @@ class RoutineController extends Controller
 
     public function store(Request $request)
     {
-        // $routine = new Routine();
-        // $routine->title = $request->title;
-        // $routine->description = $request->description;
-        // $routine->user_id = auth()->user()->id;
-        // $routine->save();
-
-        // foreach ($request->exercises as $exercise) {
-        //     $routine->exercises()->attach($exercise['id'], [
-        //         'sets' => $exercise['sets'],
-        //         'repetitions' => $exercise['repetitions'],
-        //         'rest_time' => $exercise['rest_time'],
-        //         'tips' => $exercise['tips']
-        //     ]);
-        // }
-
         $validatedData = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
+            'level' => 'required|string',
+            'duration' => 'required|integer|min:1',
+            'muscle_groups' => 'required|string',
             'exercises' => 'required|array|min:1',
             'exercises.*.sets' => 'required|integer|min:1',
             'exercises.*.repetitions' => 'required|integer|min:1',
@@ -48,6 +36,9 @@ class RoutineController extends Controller
         $routine = new Routine;
         $routine->title = $validatedData['title'];
         $routine->description = $validatedData['description'];
+        $routine->level = $validatedData['level'];
+        $routine->duration = $validatedData['duration'];
+        $routine->muscle_groups = $validatedData['muscle_groups'];
         $routine->user_id = $request->user_id;
         $routine->save();
 
@@ -61,65 +52,73 @@ class RoutineController extends Controller
             $routineEx->tips = $exercise['tips'];
             $routineEx->save();
         }
-        
 
+        return response()->json(['routine' => $routine], 200);
     }
 
-    public function show(Routine $routine)
+    // public function show(Routine $routine)
+    // {
+    //     $routine->load('exercises');
+    //     return view('routines.show', compact('routine'));
+    // }
+
+    // public function edit(Routine $routine)
+    // {
+    //     $exercises = Exercise::all();
+    //     $routine->load('exercises');
+    //     return view('routines.edit', compact('routine', 'exercises'));
+    // }
+
+    public function update(Request $request, $id)
     {
-        $routine->load('exercises');
-        return view('routines.show', compact('routine'));
-    }
+        $routine = Routine::find($id);
+        if ($routine){
+            if ($request->input('title')){
+                $routine->title=$request->input('title');
+            }
+            if ($request->input('description')){
+                $routine->description=$request->input('description');
+            }
+            if ($request->input('level')){
+                $routine->level=$request->input('level');
+            }
+            if ($request->input('duration')){
+                $routine->duration=$request->input('duration');
+            }
+            if ($request->input('muscle_groups')){
+                $routine->muscle_groups=$request->input('muscle_groups');
+            }
+            $routine->save();
 
-    public function edit(Routine $routine)
-    {
-        $exercises = Exercise::all();
-        $routine->load('exercises');
-        return view('routines.edit', compact('routine', 'exercises'));
-    }
-
-    public function update(Request $request, Routine $routine)
-    {
-        $request->validate([
-            'title' => 'required',
-            'description' => 'required',
-            'exercises' => 'required|array',
-            'exercises.*.exercise_id' => 'required|exists:exercises,id',
-            'exercises.*.sets' => 'required|integer|min:1',
-            'exercises.*.repetitions' => 'required|integer|min:1',
-            'exercises.*.rest_time' => 'required|integer|min:1',
-            'exercises.*.tips' => 'nullable|string|max:255',
-        ]);
-
-        $routine->title = $request->title;
-        $routine->description = $request->description;
-        $routine->save();
-
-        $routine->exercises()->delete();
-
-        foreach ($request->exercises as $exercise) {
-            $routineExercise = new RoutineExercise();
-            $routineExercise->routine_id = $routine->id;
-            $routineExercise->exercise_id = $exercise['exercise_id'];
-            $routineExercise->sets = $exercise['sets'];
-            $routineExercise->repetitions = $exercise['repetitions'];
-            $routineExercise->rest_time = $exercise['rest_time'];
-            $routineExercise->tips = $exercise['tips'];
-            $routineExercise->save();
+            return response()->json([
+                'success' => true,
+                'data'    => $routine
+            ], 201);
+        }else{
+            return response()->json([
+                'success'  => false,
+                'message' => 'Error, rutina no encontrada'
+            ], 404);
         }
-
-        return response()->json([
-            'message' => 'Routine updated successfully',
-            'routine' => $routine,
-        ], 200);
     }
 
     public function destroy($id)
     {
-        $routine = Routine::findOrFail($id);
-        $routine->delete();
-
-        return response()->json(['message' => 'La rutina ha sido eliminada exitosamente']);
+        
+        $routine = Routine::find($id);
+        if($routine){
+            $routine->delete();
+            return response()->json([
+                'success' => true,
+                'data'    => $routine
+            ], 201);
+        } else{
+            return response()->json([
+                'success'  => false,
+                'message' => 'Error, ejercicio no encontrado'
+            ], 404);
+        }
+        
     }
 
     public function update_workaround(Request $request, $id)

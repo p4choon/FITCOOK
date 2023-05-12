@@ -29,6 +29,9 @@ Route::post('exercises/{exercise}', [ExerciseController::class, 'update_workarou
 Route::apiResource('routines', RoutineController::class);
 Route::post('routines/{routine}', [RoutineController::class, 'update_workaround']);
 
+Route::apiResource('routine_exercises', RoutineExerciseController::class);
+Route::post('routine_exercises/{routine_exercise}', [RoutineExerciseController::class, 'update_workaround']);
+
 Route::apiResource('ingredients', IngredientController::class);
 Route::post('ingredients/{ingredient}', [IngredientController::class, 'update_workaround']);
 
