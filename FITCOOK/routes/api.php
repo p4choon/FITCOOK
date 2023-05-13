@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\RoutineExerciseController;
 use App\Http\Controllers\Api\IngredientController;
 use App\Http\Controllers\Api\RecipeController;
 use App\Http\Controllers\Api\TokenController;
+use App\Http\Controllers\StripePaymentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -39,4 +40,4 @@ Route::post('ingredients/{ingredient}', [IngredientController::class, 'update_wo
 Route::apiResource('recipes', RecipeController::class);
 Route::post('recipes/{recipe}', [RecipeController::class, 'update_workaround']);
 
-Route::post('/pagar','PagoController@procesarPago');
+Route::post('stripe', [StripePaymentController::class, 'stripePost']);
