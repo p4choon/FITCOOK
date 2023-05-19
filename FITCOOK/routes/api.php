@@ -4,7 +4,7 @@ use App\Http\Controllers\Api\RoutineController;
 use App\Http\Controllers\Api\RoutineExerciseController;
 use App\Http\Controllers\Api\IngredientController;
 use App\Http\Controllers\Api\RecipeController;
-use App\Http\Controllers\Api\TokenController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\StripePaymentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -20,10 +20,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('user', [TokenController::class, 'user'])->middleware('auth:sanctum');
-Route::post('logout', [TokenController::class, 'logout'])->middleware('auth:sanctum');
-Route::post('login', [TokenController::class, 'login']);
-Route::post('register', [TokenController::class, 'register']);
+// Route::get('user', [TokenController::class, 'user'])->middleware('auth:sanctum');
+// Route::post('logout', [TokenController::class, 'logout'])->middleware('auth:sanctum');
+// Route::post('login', [TokenController::class, 'login']);
+// Route::post('register', [TokenController::class, 'register']);
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout']);
+    // Otras rutas protegidas por autenticación
+});
 
 Route::apiResource('exercises', ExerciseController::class);
 Route::post('exercises/{exercise}', [ExerciseController::class, 'update_workaround']);
